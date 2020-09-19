@@ -57,21 +57,22 @@ def message_builder(message, user):
 
 
 def work_timer(client, number, new_user, message):
-    message_builder(" Time to get to work! You're going to accomplish great things!", new_user)
     start = time.time()
-    while int(time.time() - start) < number:
-        elapsed = int(time.time() - start)
-        time.sleep(1)
-        if elapsed % 45 == 0:
-            message_builder(" You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
+    message_builder(" Time to get to work! You're going to accomplish great things!", new_user)
+
+    schedule.every(45).seconds.do(message_builder, " You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
                                 "snack!", new_user)
-        elif elapsed % 30 == 0:
-            message_builder(" You're doing a great job! It's time to get up and stretch and drink some water!", new_user)
-        elif elapsed % 18 == 0:
-            message_builder(" Hope you enjoyed the break! Let's keep your momentum going!", new_user)
-        elif elapsed % 15 == 0:
-            message_builder(" You're doing a great job! It's time to get up and stretch!", new_user)
-    message_builder(" Congratulations, you've done a lot of wonderful things today! Can't wait to see what next time has in store!.", new_user)
+    schedule.every(30).seconds.do(message_builder, " You're doing a great job! It's time to get up and stretch and drink some water!", new_user)
+    schedule.every(18).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!", new_user)
+    schedule.every().minutes.at(":15").do(message_builder, " You're doing a great job! It's time to get up and stretch!", new_user)
+
+    while time.time() - start < number:
+        schedule.run_pending()
+        time.sleep(1)
+
+    message_builder(
+        " Congratulations, you've done a lot of wonderful things today! Can't wait to see what next time has in store!.",
+        new_user)
 
 
 f_name = 'Trey'
