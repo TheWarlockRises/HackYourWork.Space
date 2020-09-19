@@ -114,25 +114,33 @@ function App() {
                   <span>🤗</span>
                 </Emojify>
                 <form>
-                  <label for="fname">Enter your first name:</label>
+                  <label >Enter your first name:</label>
                   <br></br>
-                  <input type="text" />
+                  <input id="fname" type="text" />
                   <br></br>
-                  <label for="lname">Enter your last name:</label>
+                  
+	  	  <label >Enter your last name:</label>
                   <br></br>
-
-                  <input type="text" />
-                  <br></br>
-                  <label for="phone">Enter your phone number:</label>
+                  <input id="lname" type="text" />
                   <br></br>
 
-                  <input type="text" />
+                  <label >Enter your phone number:</label>
                   <br></br>
-                  <label for="hours">
+                  <input id="phone" type="text" />
+                  <br></br>
+
+                  <label >
                     How many hours would you like to work today?:
                   </label>
                   <br></br>
-                  <input type="text" />
+                  <input id="time" type="text" />
+	  	  <br/><br/>
+
+	  	  <Button
+                    style={{ color: "black", background: "grey" }}
+                    onClick={() => {start();}}> {" "}Start!
+                  </Button>
+
                 </form>
               </p>
             </div>
@@ -161,7 +169,7 @@ function App() {
                 <Button
                   style={{ color: "black", background: "grey" }}
                   onClick={() => {
-                    submit();
+                    done();
                   }}
                 >
                   {" "}
@@ -176,18 +184,11 @@ function App() {
   );
 }
 
-/*function App() {
-  return (
-    <div className="App">
-	  <form>
-	  	<TextField id="phone" label="phone number" /><br/>
-	  	<Button onClick={() => { submit()  }}> Login</Button>
-	  </form>
-    </div>
-  );
-}*/
+function done() {
+	alert("we'll stop now")
+}
 
-function submit() {
+function start() {
 	alert(document.getElementById("phone").value)
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "http://3.93.240.100:5000/sms", true);
