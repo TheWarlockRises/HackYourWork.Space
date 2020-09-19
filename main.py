@@ -12,6 +12,7 @@ import datetime as date
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
 client = Client(account_sid, auth_token)
+finished = False
 
 app = Flask(__name__)
 
@@ -25,13 +26,10 @@ def sms_reply():
 
     # Determine the right reply for this message
     if body == 'go':
-        start = time.time()
         resp.message("Let's keep up the good work!")
-        newStart = work_timer(client, secGoal, new_user, message_builder)
+        work_timer(client, secGoal, new_user, message_builder)
     elif body == 'stop':
-        work_break = time.time()
         resp.message("The timer has stopped. Enjoy your break!")
-
     elif body == 'quit':
         resp.message("Sorry to see you go, but good job on what you've accomplished today")
 
@@ -57,47 +55,67 @@ def work_timer(client, number, new_user, message):
     except TwilioRestException as e:
         print(e)
     print(first_message.sid)
-    if time.time() % 45 == 0:
-        message = message + "You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
-                            "snack! Text STOP to stop your timer! "
-        try:
-            snack_message = client.messages \
-                .create(
-                body=message,
-                from_='+13344908466',
-                to=new_user.phone
-            )
-        except TwilioRestException as e:
-            print(e)
-        print(snack_message.sid)
-    elif time.time() % 30 == 0:
-        message = message + " You're doing a great job! It's time to get up and stretch and drink some water!"
-        try:
-            drink_message = client.messages \
-                .create(
-                body=message,
-                from_='+13344908466',
-                to=new_user.phone
-            )
-        except TwilioRestException as e:
-            print(e)
-        print(drink_message.sid)
-    elif time.time() % 15 == 0:
-        message = message + " You're doing a great job! It's time to get up and stretch!"
-        try:
-            break_message = client.messages \
-                .create(
-                body=message,
-                from_='+13344908466',
-                to=new_user.phone
-            )
-        except TwilioRestException as e:
-            print(e)
-        print(break_message.sid)
-    end = time.time()
-    if end - start >= number:
-        finished = True
-    return finished
+    while time.time() < number:
+        if time.time() % 45 == 0:
+            message = message + "You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
+                                "snack!"
+            try:
+                snack_message = client.messages \
+                    .create(
+                    body=message,
+                    from_='+13344908466',
+                    to=new_user.phone
+                )
+            except TwilioRestException as e:
+                print(e)
+            print(snack_message.sid)
+        elif time.time() % 30 == 0:
+            message = message + " You're doing a great job! It's time to get up and stretch and drink some water!"
+            try:
+                drink_message = client.messages \
+                    .create(
+                    body=message,
+                    from_='+13344908466',
+                    to=new_user.phone
+                )
+            except TwilioRestException as e:
+                print(e)
+            print(drink_message.sid)
+        elif time.time() % 18 == 0:
+            message = message + " Hope you enjoyed the break! Let's keep your momentum going!"
+            try:
+                back_to_work_message = client.messages \
+                    .create(
+                        body=message,
+                        from_='+13344908466',
+                        to=new_user.phone
+                    )
+            except TwilioRestException as e:
+                print(e)
+            print(back_to_work_message.sid)
+        elif time.time() % 15 == 0:
+            message = message + " You're doing a great job! It's time to get up and stretch!"
+            try:
+                break_message = client.messages \
+                    .create(
+                    body=message,
+                    from_='+13344908466',
+                    to=new_user.phone
+                )
+            except TwilioRestException as e:
+                print(e)
+            print(break_message.sid)
+    try:
+        last_message = client.messages \
+            .create(
+            body="Congratulations, " + new_user.first + "! You've worked " + str(goal) + " " + units + "!",
+            from_='+13344908466',
+            to=new_user.phone
+        )
+    except TwilioRestException as e:
+        print(e)
+
+    print(last_message.sid)
 
 
 f_name = 'Trey'
@@ -105,7 +123,6 @@ l_name = "D'Amico"
 num = '+18302377042'
 goal = 1
 units = 'minute(s)'
-finished = False
 secGoal = conversion(goal, units)
 new_user = User(f_name, l_name, num, goal)
 message_builder = "Hey there, " + new_user.first + "!"
@@ -121,20 +138,5 @@ except TwilioRestException as e:
     print(e)
 
 print(first_message.sid)
-
-while finished is False:
-    time.sleep(1)
-
-try:
-    last_message = client.messages \
-        .create(
-            body="Congratulations, " + new_user.first + "! You've worked " + str(goal) + " " + units + "!",
-            from_='+13344908466',
-            to=new_user.phone
-        )
-except TwilioRestException as e:
-    print(e)
-
-print(last_message.sid)
 
 app.run(host='0.0.0.0')
