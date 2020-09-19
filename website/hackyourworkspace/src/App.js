@@ -133,11 +133,11 @@ function App() {
                   <br></br>
                   <div>
                     <label>Hour(s): </label>
-                    <input id="hour" type="text" />
+                    <input id="hours" type="text" />
                   </div>
                   <div>
                     <label>Minute(s): </label>
-                    <input id="min" type="text" />
+                    <input id="minutes" type="text" />
                   </div>
                   <br />
                   <br />
@@ -201,11 +201,15 @@ function done() {
 function start() {
   alert(document.getElementById("phone").value);
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://3.93.240.100:5000/sms", true);
+  xhr.open("POST", "http://3.93.240.100:5000/userupdate", true);
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(
     JSON.stringify({
-      num: document.getElementById("phone").value,
+      "num": document.getElementById("phone").value,
+      "fname": document.getElementById("fname").value,
+      "lname": document.getElementById("lname").value,
+      "hours": document.getElementById("hours").value,
+      "minutes": document.getElementById("minutes").value
     })
   );
 }
