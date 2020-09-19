@@ -59,8 +59,9 @@ def message_builder(message, user):
 def work_timer(client, number, new_user, message):
     start = time.time()
     message_builder(" Time to get to work! You're going to accomplish great things!", new_user)
-    while time.time() - start < number:
-        elapsed = time.time() - start
+    while int(time.time() - start) < number:
+        elapsed = int(time.time() - start)
+        time.sleep(1)
         if elapsed % 45 == 0:
             message_builder(" You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
                                 "snack!", new_user)
@@ -81,6 +82,6 @@ units = 'minute(s)'
 secGoal = conversion(goal, units)
 new_user = User(f_name, l_name, num, goal)
 
-message_builder("Ready to get started? Text GO when you're ready.", new_user)
+message_builder(" Ready to get started? Text GO when you're ready.", new_user)
 
 app.run(host='0.0.0.0')
