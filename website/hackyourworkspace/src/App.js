@@ -114,33 +114,39 @@ function App() {
                   <span>🤗</span>
                 </Emojify>
                 <form>
-                  <label >Enter your first name:</label>
+                  <label>Enter your first name:</label>
                   <br></br>
                   <input id="fname" type="text" />
                   <br></br>
-                  
-	  	  <label >Enter your last name:</label>
+
+                  <label>Enter your last name:</label>
                   <br></br>
                   <input id="lname" type="text" />
                   <br></br>
 
-                  <label >Enter your phone number:</label>
+                  <label>Enter your phone number:</label>
                   <br></br>
                   <input id="phone" type="text" />
                   <br></br>
 
-                  <label >
-                    How many hours would you like to work today?:
-                  </label>
+                  <p>How long would you like to work today?:</p>
                   <br></br>
-                  <input id="time" type="text" />
-	  	  <br/><br/>
+                  <label>Hour(s): </label>
+                  <input id="hour" type="text" />
+                  <label>Minute(s): </label>
+                  <input id="min" type="text" />
+                  <br />
+                  <br />
 
-	  	  <Button
+                  <Button
                     style={{ color: "black", background: "grey" }}
-                    onClick={() => {start();}}> {" "}Start!
+                    onClick={() => {
+                      start();
+                    }}
+                  >
+                    {" "}
+                    Start!
                   </Button>
-
                 </form>
               </p>
             </div>
@@ -185,17 +191,19 @@ function App() {
 }
 
 function done() {
-	alert("we'll stop now")
+  alert("we'll stop now");
 }
 
 function start() {
-	alert(document.getElementById("phone").value)
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://3.93.240.100:5000/sms", true);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.send(JSON.stringify({
-    		num: document.getElementById("phone").value 
-	}));
+  alert(document.getElementById("phone").value);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://3.93.240.100:5000/sms", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(
+    JSON.stringify({
+      num: document.getElementById("phone").value,
+    })
+  );
 }
 
 export default App;
