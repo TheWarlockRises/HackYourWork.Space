@@ -14,7 +14,13 @@ function App() {
 }
 
 function submit() {
-	alert()
+	alert(document.getElementById("phone").value)
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "http://3.93.240.100:5000/sms", true);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send(JSON.stringify({
+    		num: document.getElementById("phone").value 
+	}));
 }
 
 export default App;
