@@ -6,6 +6,7 @@ from user import User
 import time
 import os
 import datetime as date
+import schedule
 
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
