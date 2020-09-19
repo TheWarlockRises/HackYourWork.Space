@@ -42,81 +42,35 @@ def conversion(number, state):
     if state == "hour(s)":
         return number * 3600
 
+def message_builder(message, user):
+    message_base = "Hey there, " + user.first + "! "
+    try:
+        new_message = client.messages \
+            .create(
+            body=message_base + message,
+            from_='+13344908466',
+            to=user.phone
+        )
+    except TwilioRestException as e:
+        print(e)
+    print(new_message.sid)
+
 
 def work_timer(client, number, new_user, message):
     start = time.time()
-    try:
-        first_message = client.messages \
-            .create(
-            body="Time to get to work.",
-            from_='+13344908466',
-            to=new_user.phone
-        )
-    except TwilioRestException as e:
-        print(e)
-    print(first_message.sid)
+    message_builder(" Time to get to work! You're going to accomplish great things!", new_user)
     while time.time() - start < number:
         elapsed = time.time() - start
         if elapsed % 45 == 0:
-            message = message + "You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
-                                "snack!"
-            try:
-                snack_message = client.messages \
-                    .create(
-                    body=message,
-                    from_='+13344908466',
-                    to=new_user.phone
-                )
-            except TwilioRestException as e:
-                print(e)
-            print(snack_message.sid)
+            message_builder(" You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
+                                "snack!", new_user)
         elif elapsed % 30 == 0:
-            message = message + " You're doing a great job! It's time to get up and stretch and drink some water!"
-            try:
-                drink_message = client.messages \
-                    .create(
-                    body=message,
-                    from_='+13344908466',
-                    to=new_user.phone
-                )
-            except TwilioRestException as e:
-                print(e)
-            print(drink_message.sid)
+            message_builder(" You're doing a great job! It's time to get up and stretch and drink some water!", new_user)
         elif elapsed % 18 == 0:
-            message = message + " Hope you enjoyed the break! Let's keep your momentum going!"
-            try:
-                back_to_work_message = client.messages \
-                    .create(
-                        body=message,
-                        from_='+13344908466',
-                        to=new_user.phone
-                    )
-            except TwilioRestException as e:
-                print(e)
-            print(back_to_work_message.sid)
+            message_builder(" Hope you enjoyed the break! Let's keep your momentum going!", new_user)
         elif elapsed % 15 == 0:
-            message = message + " You're doing a great job! It's time to get up and stretch!"
-            try:
-                break_message = client.messages \
-                    .create(
-                    body=message,
-                    from_='+13344908466',
-                    to=new_user.phone
-                )
-            except TwilioRestException as e:
-                print(e)
-            print(break_message.sid)
-    try:
-        last_message = client.messages \
-            .create(
-            body="Congratulations, " + new_user.first + "! You've worked " + str(goal) + " " + units + "!",
-            from_='+13344908466',
-            to=new_user.phone
-        )
-    except TwilioRestException as e:
-        print(e)
-
-    print(last_message.sid)
+            message_builder(" You're doing a great job! It's time to get up and stretch!", new_user)
+    message_builder(" Congratulations, you've done a lot of wonderful things today! Can't wait to see what next time has in store!.", new_user)
 
 
 f_name = 'Trey'
@@ -126,7 +80,6 @@ goal = 1
 units = 'minute(s)'
 secGoal = conversion(goal, units)
 new_user = User(f_name, l_name, num, goal)
-message_builder = "Hey there, " + new_user.first + "!"
 
 try:
     first_message = client.messages \
