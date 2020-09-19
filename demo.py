@@ -57,8 +57,8 @@ def message_builder(message, user):
 
 
 def work_timer(client, number, new_user, message):
-    start = time.time()
     message_builder(" Time to get to work! You're going to accomplish great things!", new_user)
+    start = time.time()
     while int(time.time() - start) < number:
         elapsed = int(time.time() - start)
         time.sleep(1)
