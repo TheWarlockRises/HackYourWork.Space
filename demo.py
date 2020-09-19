@@ -81,16 +81,6 @@ units = 'minute(s)'
 secGoal = conversion(goal, units)
 new_user = User(f_name, l_name, num, goal)
 
-try:
-    first_message = client.messages \
-        .create(
-            body=message_builder + "Ready to get started? Text GO when you're ready.",
-            from_='+13344908466',
-            to=new_user.phone
-        )
-except TwilioRestException as e:
-    print(e)
-
-print(first_message.sid)
+message_builder("Ready to get started? Text GO when you're ready.", new_user)
 
 app.run(host='0.0.0.0')
