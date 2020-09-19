@@ -73,4 +73,4 @@ except TwilioRestException as e:
 
 print(last_message.sid)
 
-app.run(debug=True)
+app.run(host='0.0.0.0')
