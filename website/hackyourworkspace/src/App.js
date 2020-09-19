@@ -131,10 +131,14 @@ function App() {
 
                   <p>How long would you like to work today?:</p>
                   <br></br>
-                  <label>Hour(s): </label>
-                  <input id="hour" type="text" />
-                  <label>Minute(s): </label>
-                  <input id="min" type="text" />
+                  <div>
+                    <label>Hour(s): </label>
+                    <input id="hour" type="text" />
+                  </div>
+                  <div>
+                    <label>Minute(s): </label>
+                    <input id="min" type="text" />
+                  </div>
                   <br />
                   <br />
 
