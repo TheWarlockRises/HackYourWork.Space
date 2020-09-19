@@ -55,8 +55,9 @@ def work_timer(client, number, new_user, message):
     except TwilioRestException as e:
         print(e)
     print(first_message.sid)
-    while time.time() < number:
-        if time.time() % 45 == 0:
+    while time.time() - start < number:
+        elapsed = time.time() - start
+        if elapsed % 45 == 0:
             message = message + "You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a " \
                                 "snack!"
             try:
@@ -69,7 +70,7 @@ def work_timer(client, number, new_user, message):
             except TwilioRestException as e:
                 print(e)
             print(snack_message.sid)
-        elif time.time() % 30 == 0:
+        elif elapsed % 30 == 0:
             message = message + " You're doing a great job! It's time to get up and stretch and drink some water!"
             try:
                 drink_message = client.messages \
@@ -81,7 +82,7 @@ def work_timer(client, number, new_user, message):
             except TwilioRestException as e:
                 print(e)
             print(drink_message.sid)
-        elif time.time() % 18 == 0:
+        elif elapsed % 18 == 0:
             message = message + " Hope you enjoyed the break! Let's keep your momentum going!"
             try:
                 back_to_work_message = client.messages \
@@ -93,7 +94,7 @@ def work_timer(client, number, new_user, message):
             except TwilioRestException as e:
                 print(e)
             print(back_to_work_message.sid)
-        elif time.time() % 15 == 0:
+        elif elapsed % 15 == 0:
             message = message + " You're doing a great job! It's time to get up and stretch!"
             try:
                 break_message = client.messages \
