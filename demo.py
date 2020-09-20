@@ -10,11 +10,11 @@ import schedule
 from pprint import pprint
 import emoji
 
-loopTime = 500 
-goBreakSecs = 1800
-returnBreakSecs = 3600
-waterStretchSecs = 18000
-waterSnackSecs = 24000
+loopTime = 500
+goBreakSecs = 30
+returnBreakSecs = 60
+waterStretchSecs = 300
+waterSnackSecs = 400
 
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
@@ -90,7 +90,7 @@ def work_timer(user):
     schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":clapping_hands:") + " It's time to get up and stretch! " + emoji.emojize(":raising_hands:"), user).tag(user.phone,"doOnce")
 
     while int(time.time() - start) < int(number):
-        if((int(time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % number):
+        if((int(time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
             schedule.clear(tag='doOnce')
         schedule.run_pending()
         time.sleep(1)
