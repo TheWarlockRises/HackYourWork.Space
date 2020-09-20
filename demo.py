@@ -82,12 +82,12 @@ def message_builder(message, user):
 def work_timer(user):
     number = user.goal
     start = time.time()
-    message_builder(" Time to get to work! You're going to accomplish great things! " + emoji.emojize("hammer") + "\nReply DONE to stop receiving reminders.", user)
+    message_builder(" Time to get to work! You're going to accomplish great things! " + emoji.emojize(":hammer:") + "\nReply DONE to stop receiving reminders.", user)
 
-    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize("trophy") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") +", drink some water " + emoji.emojize("droplet") + ", and eat a snack! " + emoji.emojize("face_savoring_food"), user).tag(user.phone)
-    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("sports_medal") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") + " and drink some water!" + emoji.emojize("droplet"), user).tag(user.phone)
-    schedule.every(returnBreakSecs).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!" + emoji.emojize("flexed_biceps"), user).tag(user.phone)
-    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("clapping_hands") + " It's time to get up and stretch!" + emoji.emojize("rainsing_hands"), user).tag(user.phone,"doOnce")
+    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize(":trophy:") + " It's time to get up and stretch " + emoji.emojize(":raising_hands:") +", drink some water " + emoji.emojize(":droplet:") + ", and eat a snack! " + emoji.emojize(":face_savoring_food:"), user).tag(user.phone)
+    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":sports_medal:") + " It's time to get up and stretch " + emoji.emojize(":raising_hands:") + " and drink some water!" + emoji.emojize(":droplet:"), user).tag(user.phone)
+    schedule.every(returnBreakSecs).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going! " + emoji.emojize(":flexed_biceps:"), user).tag(user.phone)
+    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":clapping_hands:") + " It's time to get up and stretch! " + emoji.emojize(":raising_hands:"), user).tag(user.phone,"doOnce")
 
     while int(time.time() - start) < int(number):
         if((int(time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
@@ -96,7 +96,7 @@ def work_timer(user):
         time.sleep(1)
 
     message_builder(
-        " Congratulations, you've done a lot of wonderful things today! Can't wait to see what next time has in store!." + emoji.emojize("partying_face"),
+        " Congratulations, you've done a lot of wonderful things today! Can't wait to see what next time has in store!. " + emoji.emojize(":partying_face:"),
         user)
 
 app.run(host='0.0.0.0')
