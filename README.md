@@ -6,8 +6,8 @@ After so many hackathons, long work days, and study fests, we realized how commo
 - Twilio API to send SMS messages
 
 # Site
-http://3.93.240.100:3000/
-*note twilio api will not work with your phone number therefore won't send you messages
+http://3.93.240.100:3000/  
+*note the free trial twilio api only works with numbers verified on the account, and therefore won't send you messages
 
 # Team
 Submitted to HackRice X hackathon.
