@@ -10,6 +10,12 @@ import schedule
 from pprint import pprint
 import emoji
 
+loopTime = 3600
+goBreakSecs = 600
+returnBreakSecs = 720
+waterStretchSecs = 1200
+waterSnackSecs = 2700
+
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
 client = Client(account_sid, auth_token)
@@ -78,12 +84,14 @@ def work_timer(user):
     start = time.time()
     message_builder(" Time to get to work! You're going to accomplish great things! " + emoji.emojize("hammer") + "\nReply DONE to stop receiving reminders.", user)
 
-    schedule.every(45).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize("trophy") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") +", drink some water " + emoji.emojize("droplet") + ", and eat a snack! " + emoji.emojize("face_savoring_food"), user).tag(user.phone)
-    schedule.every(30).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("sports_medal") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") + " and drink some water!" + emoji.emojize("droplet"), user).tag(user.phone)
-    schedule.every(18).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!" + emoji.emojize("flexed_biceps"), user).tag(user.phone)
-    schedule.every(1).minutes.at(":15").do(message_builder, " You're doing a great job! " + emoji.emojize("clapping_hands") + " It's time to get up and stretch!" + emoji.emojize("rainsing_hands"), user).tag(user.phone)
+    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize("trophy") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") +", drink some water " + emoji.emojize("droplet") + ", and eat a snack! " + emoji.emojize("face_savoring_food"), user).tag(user.phone)
+    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("sports_medal") + " It's time to get up and stretch " + emoji.emojize("rainsing_hands") + " and drink some water!" + emoji.emojize("droplet"), user).tag(user.phone)
+    schedule.every(returnBreakSecs).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!" + emoji.emojize("flexed_biceps"), user).tag(user.phone)
+    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("clapping_hands") + " It's time to get up and stretch!" + emoji.emojize("rainsing_hands"), user).tag(user.phone,"doOnce")
 
     while int(time.time() - start) < int(number):
+        iif((int(*time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
+            schedule.clear(tag='doOnce')
         schedule.run_pending()
         time.sleep(1)
 
