@@ -9,6 +9,12 @@ import os
 import schedule
 from pprint import pprint
 
+goBreakSecs = 600
+returnBreakSecs = 720
+waterStretchSecs = 1200
+waterSnackSecs = 2700
+
+
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
 client = Client(account_sid, auth_token)
@@ -21,7 +27,7 @@ CORS(app)
 def update_user():
     json = request.json
     pprint(json)
-    user = User(json['fname'],json['lname'],json['num'],60 * (json['hours']*60 + json['minutes']))
+    user = User(json['fname'],json['lname'],json['num'],60 * (int(json['hours'])*60 + int(json['minutes'])))
     message_builder("Ready to get started? Text GO to start",user)
     users[user.phone] = user
     return ("OK")
@@ -77,12 +83,15 @@ def work_timer(client, user):
     start = time.time()
     message_builder(" Time to get to work! You're going to accomplish great things! \n Reply DONE to stop receiving reminders.", user)
 
-    schedule.every(45).seconds.do(message_builder, " You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a snack!", user).tag(user.phone)
-    schedule.every(30).seconds.do(message_builder, " You're doing a great job! It's time to get up and stretch and drink some water!", user).tag(user.phone)
-    schedule.every(18).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!", user).tag(user.phone)
-    schedule.every(1).minutes.at(":15").do(message_builder, " You're doing a great job! It's time to get up and stretch!", user).tag(user.phone)
+    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a snack!", user).tag(user.phone)
+    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! It's time to get up and stretch and drink some water!", user).tag(user.phone)
+    schedule.every(returnBreakSecs).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!", user).tag(user.phone)
+    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! It's time to get up and stretch!", user).tag(user.phone, "doOnce")
 
     while int(time.time() - start) < int(number):
+        print(int(time.time() - start))
+        if((int(time.time() - start)) % 17 != (int(time.time() - start)) % 60):
+            schedule.clear(tag='doOnce')
         schedule.run_pending()
         time.sleep(1)
 
