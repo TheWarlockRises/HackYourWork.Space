@@ -90,7 +90,7 @@ def work_timer(user):
     schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize("clapping_hands") + " It's time to get up and stretch!" + emoji.emojize("rainsing_hands"), user).tag(user.phone,"doOnce")
 
     while int(time.time() - start) < int(number):
-        if((int(*time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
+        if((int(time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
             schedule.clear(tag='doOnce')
         schedule.run_pending()
         time.sleep(1)
