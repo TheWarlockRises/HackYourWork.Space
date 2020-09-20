@@ -6,7 +6,6 @@ from twilio.twiml.messaging_response import MessagingResponse
 from user import User
 import time
 import os
-import datetime as date
 import schedule
 from pprint import pprint
 
@@ -81,7 +80,7 @@ def work_timer(client, user):
     schedule.every(45).seconds.do(message_builder, " You've accomplished a lot! It's time to get up and stretch, drink some water, and eat a snack!", user).tag(user.phone)
     schedule.every(30).seconds.do(message_builder, " You're doing a great job! It's time to get up and stretch and drink some water!", user).tag(user.phone)
     schedule.every(18).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going!", user).tag(user.phone)
-    schedule.every().minutes.at(":15").do(message_builder, " You're doing a great job! It's time to get up and stretch!", user).tag(user.phone)
+    schedule.every(1).minutes.at(":15").do(message_builder, " You're doing a great job! It's time to get up and stretch!", user).tag(user.phone)
 
     while int(time.time() - start) < int(number):
         schedule.run_pending()
