@@ -199,7 +199,6 @@ function done() {
 }
 
 function start() {
-  alert(document.getElementById("phone").value);
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "http://3.93.240.100:5000/userupdate", true);
   xhr.setRequestHeader("Content-Type", "application/json");

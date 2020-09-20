@@ -4,4 +4,4 @@ class User:
         self.first = f_name
         self.last = l_name
         self.phone = num
-        self.work_hours = goal
+        self.goal = goal
