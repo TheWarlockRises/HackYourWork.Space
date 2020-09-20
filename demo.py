@@ -44,7 +44,7 @@ def sms_reply():
 
         #this resp is sent late because work_timer blocks the return statement
         #resp.message("Let's keep up the good work!")
-        work_timer(client, users[inNumber])
+        work_timer(users[inNumber])
     elif body == 'done':
         #will need to figure out how to stop the `scehdule` when this message comes in
         schedule.clear(tag=inNumber)
