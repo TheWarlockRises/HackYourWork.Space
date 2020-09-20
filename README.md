@@ -5,9 +5,6 @@ After so many hackathons, long work days, and study fests, we realized how commo
 - Web framework built with React
 - Twilio API to send SMS messages
 
-# Site
-https://HackYourWork.space
-
 # Team
 Submitted to HackRice X hackathon.
 - Anna Arroyo 
