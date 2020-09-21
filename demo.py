@@ -10,11 +10,11 @@ import schedule
 from pprint import pprint
 import emoji
 
-loopTime = 500 
-goBreakSecs = 15
-returnBreakSecs = 18
-waterStretchSecs = 30
-waterSnackSecs = 45
+loopTime = 500
+goBreakSecs = 30
+returnBreakSecs = 60
+waterStretchSecs = 300
+waterSnackSecs = 400
 
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
