@@ -1,4 +1,4 @@
-from twilio.base.exceptions import TwilioRestException
+
 from twilio.rest import Client
 from flask import Flask, request, redirect
 from flask_cors import CORS
@@ -11,10 +11,10 @@ from pprint import pprint
 import emoji
 
 loopTime = 500 
-goBreakSecs = 30
-returnBreakSecs = 60
-waterStretchSecs = 300
-waterSnackSecs = 400
+goBreakSecs = 15
+returnBreakSecs = 18
+waterStretchSecs = 30
+waterSnackSecs = 45
 
 account_sid = os.environ['TWILIO_SID']
 auth_token = os.environ['TWILIO_TOKEN']
@@ -28,7 +28,7 @@ CORS(app)
 def update_user():
     json = request.json
     pprint(json)
-    user = User(json['fname'],json['lname'],json['num'],60 * (json['hours']*60 + json['minutes']))
+    user = User(json['fname'],json['lname'],json['num'],60 * (int(json['hours'])*60 + int(json['minutes'])))
     message_builder("Ready to get started? Text GO to start",user)
     users[user.phone] = user
     return ("OK")
@@ -84,12 +84,13 @@ def work_timer(user):
     start = time.time()
     message_builder(" Time to get to work! You're going to accomplish great things! " + emoji.emojize(":hammer:") + "\nReply DONE to stop receiving reminders.", user)
 
-    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize(":trophy:") + " It's time to get up and stretch " + emoji.emojize(":raising_hands:") +", drink some water " + emoji.emojize(":droplet:") + ", and eat a snack! " + emoji.emojize(":face_savoring_food:"), user).tag(user.phone)
-    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":sports_medal:") + " It's time to get up and stretch " + emoji.emojize(":raising_hands:") + " and drink some water!" + emoji.emojize(":droplet:"), user).tag(user.phone)
+    schedule.every(waterSnackSecs).seconds.do(message_builder, " You've accomplished a lot! " + emoji.emojize(":trophy:") + " It's time to get up and stretch " + emoji.emojize(":raising_hands:"), user).tag(user.phone)
+    schedule.every(waterStretchSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":sports_medal:") + "It's time to drink some water!" + emoji.emojize(":droplet:"), user).tag(user.phone)
     schedule.every(returnBreakSecs).seconds.do(message_builder, " Hope you enjoyed the break! Let's keep your momentum going! " + emoji.emojize(":flexed_biceps:"), user).tag(user.phone)
-    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":clapping_hands:") + " It's time to get up and stretch! " + emoji.emojize(":raising_hands:"), user).tag(user.phone,"doOnce")
+    schedule.every(goBreakSecs).seconds.do(message_builder, " You're doing a great job! " + emoji.emojize(":clapping_hands:") + " It's time to get a snack! " + emoji.emojize(":pizza:"), user).tag(user.phone,'doOnce')
 
     while int(time.time() - start) < int(number):
+        print(str(int(time.time() - start)) + "/" + str(int(number)))
         if((int(time.time() - start)) % (goBreakSecs + 2) != (int(time.time() - start)) % loopTime):
             schedule.clear(tag='doOnce')
         schedule.run_pending()
